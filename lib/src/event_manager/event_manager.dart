@@ -84,7 +84,7 @@ class EventManager {
   }
 
   void remove<T extends EventType>(
-      T eventType, void Function(T event) listener) {
+      T eventType, void Function(T event)/*!*/ listener) {
     List<dynamic> targets = listeners[eventType.runtimeType];
     if (targets == null) {
       return;

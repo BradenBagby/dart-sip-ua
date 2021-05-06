@@ -26,9 +26,9 @@ class Id {
     return Id(map['call_id'], map['local_tag'], map['remote_tag']);
   }
 
-  String call_id;
-  String local_tag;
-  String remote_tag;
+  String/*!*/ call_id;
+  String/*!*/ local_tag;
+  String/*!*/ remote_tag;
 
   @override
   String toString() {
@@ -93,19 +93,19 @@ class Dialog {
         '$type dialog created with status ${_state == Dialog_C.STATUS_EARLY ? 'EARLY' : 'CONFIRMED'}');
   }
 
-  RTCSession _owner;
-  UA _ua;
+  /*late final*/ RTCSession _owner;
+  /*late final*/ UA _ua;
   bool uac_pending_reply = false;
   bool uas_pending_reply = false;
-  int _state;
-  int _remote_seqnum;
-  URI _local_uri;
-  URI _remote_uri;
-  URI _remote_target;
-  List<dynamic> _route_set;
-  int _ack_seqnum;
-  Id _id;
-  num local_seqnum;
+  /*late*/ int _state;
+  /*late*/ int _remote_seqnum;
+  /*late*/ URI _local_uri;
+  /*late*/ URI _remote_uri;
+  /*late*/ URI _remote_target;
+  /*late*/ List<dynamic> _route_set;
+  int /*?*/ _ack_seqnum;
+  /*late*/ Id _id;
+  num /*?*/ local_seqnum;
 
   UA get ua => _ua;
   Id get id => _id;
