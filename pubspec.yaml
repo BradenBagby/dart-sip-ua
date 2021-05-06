@@ -7,17 +7,17 @@ environment:
   flutter: ">=1.10.0"
 
 dependencies:
-  crypto: ^3.0.0
-  flutter_webrtc: ^0.6.5
-  intl: any
+  crypto: ^3.0.1
+  flutter_webrtc: ^0.6.3
+  intl: ^0.17.0
   logger: ^1.0.0
   parser_error: ^0.2.0
-  path: ^1.6.4
-  random_string: ^2.0.0
+  path: ^1.8.0
+  random_string: ^2.2.0-nullsafety
   recase: ^4.0.0
   sdp_transform: ^0.3.0
-  uuid: ^3.0.2
+  uuid: ^3.0.4
   
 
 dev_dependencies:
-  test: ^1.6.7
+  test: ^1.17.3
