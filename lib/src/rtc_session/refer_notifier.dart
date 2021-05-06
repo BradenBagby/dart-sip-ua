@@ -1,4 +1,4 @@
-// @dart=2.9
+
 
 import '../constants.dart' as DartSIP_C;
 import '../constants.dart';
@@ -14,7 +14,7 @@ class C {
 }
 
 class ReferNotifier {
-  ReferNotifier(rtc.RTCSession session, int/*!*/ id, [int expires]) {
+  ReferNotifier(rtc.RTCSession session, int id, [int? expires]) {
     _session = session;
     _id = id;
     _expires = expires ?? C.expires;
@@ -24,12 +24,12 @@ class ReferNotifier {
     notify(100);
   }
 
-  rtc.RTCSession _session;
-  int/*!*/ _id;
-  /*late final*/ int _expires;
+  late rtc.RTCSession _session;
+  late int _id;
+  late final int _expires;
   bool _active = true;
 
-  void notify(int/*!*/ code, [String reason]) {
+  void notify(int code, [String? reason]) {
     logger.debug('notify()');
 
     if (_active == false) {
