@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:sip_ua/src/sip_message.dart';
 
 import '../event_manager/event_manager.dart';

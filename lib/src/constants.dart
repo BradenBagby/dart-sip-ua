@@ -1,3 +1,5 @@
+// @dart=2.9
+
 const String USER_AGENT = 'dart-sip-ua v0.2.2';
 
 // SIP scheme.

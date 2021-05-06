@@ -1,5 +1,8 @@
 /// each EventType class can implement this method and the EventManager will call it before
 /// delivering an event, thus ensuring good quality events with a fail early approach.
+
+// @dart=2.9
+
 abstract class EventType {
   void sanityCheck() {}
 }

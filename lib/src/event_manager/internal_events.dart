@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 
 import '../rtc_session.dart' show RTCSession;
