@@ -17,9 +17,9 @@ enum TransactionState {
 }
 
 abstract class TransactionBase extends EventManager {
-  String id;
-  UA ua;
-  Transport transport;
+  String/*!*/ id;
+  UA/*!*/ ua;
+  Transport/*!*/ transport;
   TransactionState state;
   IncomingMessage last_response;
   dynamic request;
@@ -27,7 +27,7 @@ abstract class TransactionBase extends EventManager {
 
   void send();
 
-  void receiveResponse(int status_code, IncomingMessage response,
+  void receiveResponse(int/*?*/ status_code, IncomingMessage response,
       [void Function() onSuccess, void Function() onFailure]) {
     // default NO_OP implementation
   }
