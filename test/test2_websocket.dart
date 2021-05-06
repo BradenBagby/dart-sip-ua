@@ -22,7 +22,7 @@ class TestWebsocket2 {
     completer = Completer<String>();
     completer.future.then((dynamic t) {
       ctr += 7;
-      if (ctr > 5000 || finished.isCompleted) {
+      if (ctr > 49 || finished.isCompleted) {
         finished.complete();
       } else {
         send();
