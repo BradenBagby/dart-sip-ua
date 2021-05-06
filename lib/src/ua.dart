@@ -48,7 +48,7 @@ class window {
 }
 
 class DynamicSettings {
-  bool register = false;
+  bool/*!*/ register = false;
 }
 
 class Contact {
