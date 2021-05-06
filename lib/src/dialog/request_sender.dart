@@ -18,7 +18,6 @@ class DialogRequestSender {
     _ua = dialog.ua!;
     _request = request;
     _eventHandlers = eventHandlers;
-
   }
   late final Dialog _dialog;
   late final UA _ua;
@@ -52,7 +51,8 @@ class DialogRequestSender {
     // RFC3261 14.2 Modifying an Existing Session -UAC BEHAVIOR-.
     if ((_request.method == SipMethod.INVITE ||
             (_request.method == SipMethod.UPDATE && _request.body != null)) &&
-        request_sender!.clientTransaction.state != TransactionState.TERMINATED) {
+        request_sender!.clientTransaction.state !=
+            TransactionState.TERMINATED) {
       _dialog.uac_pending_reply = true;
       EventManager eventHandlers = request_sender!.clientTransaction;
       void Function(EventStateChanged data)? stateChanged;
@@ -85,7 +85,8 @@ class DialogRequestSender {
           _eventHandlers.emit(EventOnErrorResponse(response: response));
         }
       } else {
-        _request.cseq = (_dialog.local_seqnum += 1) as int;
+        _request.cseq =
+            (_dialog.local_seqnum = _dialog.local_seqnum! + 1) as int;
         _reattemptTimer = setTimeout(() {
           // TODO(cloudwebrtc): look at dialog state instead.
           if (_dialog.owner!.status != RTCSession.C.STATUS_TERMINATED) {

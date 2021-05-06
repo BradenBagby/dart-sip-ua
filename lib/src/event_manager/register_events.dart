@@ -1,5 +1,3 @@
-
-
 import 'events.dart';
 
 class EventRegistrationExpiring extends EventType {
@@ -7,16 +5,16 @@ class EventRegistrationExpiring extends EventType {
 }
 
 class EventRegistered extends EventType {
-  EventRegistered({required this.cause});
-  ErrorCause cause;
+  EventRegistered({this.cause});
+  ErrorCause? cause;
 }
 
 class EventRegistrationFailed extends EventType {
-  EventRegistrationFailed({required this.cause});
-  ErrorCause cause;
+  EventRegistrationFailed({this.cause});
+  ErrorCause? cause;
 }
 
 class EventUnregister extends EventType {
-  EventUnregister({required this.cause});
-  ErrorCause cause;
+  EventUnregister({this.cause});
+  ErrorCause? cause;
 }

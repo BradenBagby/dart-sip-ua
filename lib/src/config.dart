@@ -47,7 +47,7 @@ class Settings {
   DtmfMode? dtmf_mode = DtmfMode.INFO;
 
   // Connection options.
-  List<WebSocketInterface> sockets = <WebSocketInterface>[];
+  List<WebSocketInterface>? sockets = <WebSocketInterface>[];
   int connection_recovery_max_interval = 30;
   int connection_recovery_min_interval = 2;
 
@@ -68,7 +68,7 @@ class Checks {
   Map<String, Null Function(Settings src, Settings dst)> mandatory =
       <String, Null Function(Settings src, Settings dst)>{
     'sockets': (Settings src, Settings dst) {
-      List<WebSocketInterface> sockets = src.sockets;
+      List<WebSocketInterface>? sockets = src.sockets;
       /* Allow defining sockets parameter as:
        *  Socket: socket
        *  List of Socket: [socket1, socket2]
@@ -76,8 +76,8 @@ class Checks {
        *  List of Objects and Socket: [{socket: socket1}, socket2]
        */
       List<WebSocketInterface> copy = <WebSocketInterface>[];
-      if (sockets is List && sockets.length > 0) {
-        for (WebSocketInterface socket in sockets) {
+      if (sockets is List && (sockets?.length ?? 0) > 0) {
+        for (WebSocketInterface socket in sockets!) {
           if (Socket.isSocket(socket)) {
             copy.add(socket);
           }
