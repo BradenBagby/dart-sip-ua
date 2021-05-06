@@ -23,12 +23,14 @@ void main() {
         print('connecting => ' + data.toString());
       });
 
-      ua.on<EventSocketConnected>(EventSocketConnected,
+      ua.on<EventSocketConnected>(EventSocketConnected(),
           (EventSocketConnected data) {
         print('connected => ' + data.toString());
       });
 
-      ua.on<EventSocketDisconnected>(EventSocketDisconnected,
+
+
+      ua.on<EventSocketDisconnected>(EventSocketDisconnected(),
           (EventSocketDisconnected data) {
         print('disconnected => ' + data.toString());
       });
