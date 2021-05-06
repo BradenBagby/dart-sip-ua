@@ -30,7 +30,7 @@ class Settings {
   String instance_id = null;
 
   // Preloaded SIP Route header field.
-  bool use_preloaded_route = false;
+  bool/*?*/ use_preloaded_route = false;
 
   // Session parameters.
   bool/*?*/ session_timers = true;
@@ -44,7 +44,7 @@ class Settings {
   Map<String, dynamic> register_extra_contact_uri_params;
 
   // Dtmf mode
-  DtmfMode dtmf_mode = DtmfMode.INFO;
+  DtmfMode/*?*/ dtmf_mode = DtmfMode.INFO;
 
   // Connection options.
   List<WebSocketInterface>/*!*/ sockets = <WebSocketInterface>[];
@@ -239,14 +239,14 @@ class Checks {
       }
     },
     'use_preloaded_route': (Settings src, Settings/*!*/ dst) {
-      bool use_preloaded_route = src.use_preloaded_route;
+      bool/*?*/ use_preloaded_route = src.use_preloaded_route;
       if (use_preloaded_route == null) return;
       if (use_preloaded_route is bool) {
         dst.use_preloaded_route = use_preloaded_route;
       }
     },
     'dtmf_mode': (Settings src, Settings/*!*/ dst) {
-      DtmfMode dtmf_mode = src.dtmf_mode;
+      DtmfMode/*?*/ dtmf_mode = src.dtmf_mode;
       if (dtmf_mode == null) return;
       if (dtmf_mode is DtmfMode) {
         dst.dtmf_mode = dtmf_mode;
