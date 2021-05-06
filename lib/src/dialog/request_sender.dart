@@ -19,16 +19,14 @@ class DialogRequestSender {
     _request = request;
     _eventHandlers = eventHandlers;
 
-    // RFC3261 14.1 Modifying an Existing Session. UAC Behavior.
-    _reattempt = false;
   }
-  Dialog _dialog;
-  UA _ua;
-  OutgoingRequest _request;
-  EventManager _eventHandlers;
-  bool _reattempt;
-  Timer _reattemptTimer;
-  RequestSender _request_sender;
+  /*late final*/ Dialog /*!*/ _dialog;
+  /*late final*/ UA /*!*/ _ua;
+  /*late final*/ OutgoingRequest /*!*/ _request;
+  /*late final*/ EventManager /*!*/ _eventHandlers;
+  bool _reattempt = false;
+  Timer /*?*/ _reattemptTimer;
+  RequestSender /*?*/ _request_sender;
   RequestSender get request_sender => _request_sender;
   OutgoingRequest get request => _request;
 
