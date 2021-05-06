@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import '../event_manager/event_manager.dart';
 import '../sip_message.dart';
 import '../transport.dart';

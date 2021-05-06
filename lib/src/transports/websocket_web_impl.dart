@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:html';
 import 'dart:js_util' as JSUtils;
 import 'package:sip_ua/src/sip_ua_helper.dart';

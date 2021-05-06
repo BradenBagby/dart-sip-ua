@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:convert' show utf8;
 
 import 'grammar.dart';

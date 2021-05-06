@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'grammar.dart';
 import 'logger.dart';
 import 'transports/websocket_interface.dart';

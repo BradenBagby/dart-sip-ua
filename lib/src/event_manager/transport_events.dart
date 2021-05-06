@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import '../transports/websocket_interface.dart';
 import 'events.dart';
 

@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:parser_error/parser_error.dart';
 
 import 'grammar_parser.dart';

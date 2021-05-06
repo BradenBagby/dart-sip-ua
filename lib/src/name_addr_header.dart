@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'grammar.dart';
 import 'uri.dart';
 import 'utils.dart';
