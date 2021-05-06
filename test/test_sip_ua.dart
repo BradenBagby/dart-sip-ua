@@ -1,4 +1,4 @@
-// @dart=2.9
+
 
 import 'dart:async';
 
@@ -8,7 +8,7 @@ import 'package:sip_ua/src/transports/websocket_interface.dart';
 import 'package:sip_ua/src/ua.dart';
 import 'package:test/test.dart';
 
-UA ua;
+late UA ua;
 void main() {
   test(' WebSocket: EchoTest', () async {
     Completer<dynamic> completer = Completer<dynamic>();
