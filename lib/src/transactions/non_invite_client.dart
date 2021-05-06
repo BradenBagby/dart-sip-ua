@@ -1,5 +1,3 @@
-
-
 import 'dart:async';
 
 import '../event_manager/event_manager.dart';
@@ -30,8 +28,8 @@ class NonInviteClientTransaction extends TransactionBase {
     ua.newTransaction(this);
   }
 
-  late EventManager _eventHandlers;
-  Timer? F, K;
+  EventManager _eventHandlers;
+  Timer F, K;
 
   void stateChanged(TransactionState state) {
     this.state = state;
@@ -73,14 +71,14 @@ class NonInviteClientTransaction extends TransactionBase {
   }
 
   @override
-  void receiveResponse(int? status_code, IncomingMessage response,
-      [void Function()? onSuccess, void Function()? onFailure]) {
-    if (status_code! < 200) {
+  void receiveResponse(int status_code, IncomingMessage response,
+      [void Function() onSuccess, void Function() onFailure]) {
+    if (status_code < 200) {
       switch (state) {
         case TransactionState.TRYING:
         case TransactionState.PROCEEDING:
           stateChanged(TransactionState.PROCEEDING);
-          _eventHandlers.emit(EventOnReceiveResponse(response: response as IncomingResponse?));
+          _eventHandlers.emit(EventOnReceiveResponse(response: response));
           break;
         default:
           break;
@@ -95,7 +93,7 @@ class NonInviteClientTransaction extends TransactionBase {
           if (status_code == 408) {
             _eventHandlers.emit(EventOnRequestTimeout());
           } else {
-            _eventHandlers.emit(EventOnReceiveResponse(response: response as IncomingResponse?));
+            _eventHandlers.emit(EventOnReceiveResponse(response: response));
           }
 
           K = setTimeout(() {

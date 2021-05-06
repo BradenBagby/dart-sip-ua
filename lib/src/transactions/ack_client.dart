@@ -1,5 +1,3 @@
-
-
 import 'package:sip_ua/src/sip_message.dart';
 
 import '../event_manager/event_manager.dart';
@@ -25,7 +23,7 @@ class AckClientTransaction extends TransactionBase {
     request.setHeader('via', via);
   }
 
-  late EventManager _eventHandlers;
+  EventManager _eventHandlers;
 
   @override
   void send() {

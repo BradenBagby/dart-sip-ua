@@ -1,5 +1,3 @@
-
-
 import 'dart:convert' show utf8;
 
 import 'grammar.dart';
@@ -10,7 +8,7 @@ import 'ua.dart';
 /**
  * Parse SIP Message
  */
-IncomingMessage? parseMessage(String data, UA ua) {
+IncomingMessage parseMessage(String data, UA ua) {
   IncomingMessage message;
   int bodyStart;
   int headerEnd = data.indexOf('\r\n');
@@ -85,11 +83,11 @@ IncomingMessage? parseMessage(String data, UA ua) {
     dynamic contentLength = message.getHeader('content-length');
 
     if (contentLength is String) {
-      contentLength = int.tryParse(contentLength) as String? ?? 0 as String;
+      contentLength = int.tryParse(contentLength) ?? 0;
     }
     if (contentLength > 0) {
       List<int> encoded = utf8.encode(data);
-      List<int> content = encoded.sublist(bodyStart, bodyStart + contentLength as int?);
+      List<int> content = encoded.sublist(bodyStart, bodyStart + contentLength);
       message.body = utf8.decode(content);
     }
   } else {
@@ -187,7 +185,7 @@ dynamic parseHeader(
       } else {
         for (Map<String, dynamic> header in parsed) {
           message.addHeader('record-route', header['raw']);
-          message.headers!['Record-Route']
+          message.headers['Record-Route']
                   [message.getHeaders('record-route').length - 1]['parsed'] =
               header['parsed'];
         }
@@ -210,7 +208,7 @@ dynamic parseHeader(
       } else {
         for (Map<String, dynamic> header in parsed) {
           message.addHeader('contact', header['raw']);
-          message.headers!['Contact'][message.getHeaders('contact').length - 1]
+          message.headers['Contact'][message.getHeaders('contact').length - 1]
               ['parsed'] = header['parsed'];
         }
       }

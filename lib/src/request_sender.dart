@@ -32,14 +32,14 @@ class RequestSender {
       _eventHandlers.emit(EventOnTransportError());
     }
   }
-  late UA _ua;
-  late EventManager _eventHandlers;
-  SipMethod? _method;
-  OutgoingRequest? _request;
-  DigestAuthentication? _auth;
-  late bool _challenged;
-  late bool _staled;
-  late TransactionBase clientTransaction;
+  UA _ua;
+  EventManager _eventHandlers;
+  SipMethod _method;
+  OutgoingRequest _request;
+  DigestAuthentication _auth;
+  bool _challenged;
+  bool _staled;
+  TransactionBase clientTransaction;
 
   /**
   * Create the client transaction and send the message.
@@ -56,21 +56,21 @@ class RequestSender {
       _eventHandlers.emit(event);
     });
     handlers.on(EventOnReceiveResponse(), (EventOnReceiveResponse event) {
-      _receiveResponse(event.response!);
+      _receiveResponse(event.response);
     });
 
     switch (_method) {
       case SipMethod.INVITE:
         clientTransaction =
-            InviteClientTransaction(_ua, _ua.transport!, _request!, handlers);
+            InviteClientTransaction(_ua, _ua.transport, _request, handlers);
         break;
       case SipMethod.ACK:
         clientTransaction =
-            AckClientTransaction(_ua, _ua.transport!, _request!, handlers);
+            AckClientTransaction(_ua, _ua.transport, _request, handlers);
         break;
       default:
-        clientTransaction = NonInviteClientTransaction(
-            _ua, _ua.transport!, _request!, handlers);
+        clientTransaction =
+            NonInviteClientTransaction(_ua, _ua.transport, _request, handlers);
     }
 
     clientTransaction.send();
@@ -81,9 +81,9 @@ class RequestSender {
   * Authenticate request if needed or pass the response back to the applicant.
   */
   void _receiveResponse(IncomingResponse response) {
-    ParsedData? challenge;
+    ParsedData challenge;
     String authorization_header_name;
-    int? status_code = response.status_code;
+    int status_code = response.status_code;
 
     /*
     * Authentication
@@ -118,8 +118,8 @@ class RequestSender {
         }));
 
         // Verify that the challenge is really valid.
-        if (!_auth!.authenticate(
-            _request!.method,
+        if (!_auth.authenticate(
+            _request.method,
             Challenge.fromMap(<String, dynamic>{
               'algorithm': challenge.algorithm,
               'realm': challenge.realm,
@@ -128,25 +128,25 @@ class RequestSender {
               'stale': challenge.stale,
               'qop': challenge.qop,
             }),
-            _request!.ruri)) {
+            _request.ruri)) {
           _eventHandlers.emit(EventOnReceiveResponse(response: response));
           return;
         }
         _challenged = true;
 
         // Update ha1 and realm in the UA.
-        _ua.set('realm', _auth!.get('realm'));
-        _ua.set('ha1', _auth!.get('ha1'));
+        _ua.set('realm', _auth.get('realm'));
+        _ua.set('ha1', _auth.get('ha1'));
 
         if (challenge.stale != null) {
           _staled = true;
         }
 
-        _request = _request!.clone();
-        _request!.cseq = _request!.cseq! + 1;
-        _request!.setHeader(
-            'cseq', '${_request!.cseq} ${SipMethodHelper.getName(_method!)}');
-        _request!.setHeader(authorization_header_name, _auth.toString());
+        _request = _request.clone();
+        _request.cseq += 1;
+        _request.setHeader(
+            'cseq', '${_request.cseq} ${SipMethodHelper.getName(_method)}');
+        _request.setHeader(authorization_header_name, _auth.toString());
 
         _eventHandlers.emit(EventOnAuthenticated(request: _request));
         send();

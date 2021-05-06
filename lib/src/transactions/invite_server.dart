@@ -1,5 +1,3 @@
-
-
 import 'dart:async';
 
 import '../event_manager/internal_events.dart';
@@ -12,7 +10,7 @@ import 'transaction_base.dart';
 
 class InviteServerTransaction extends TransactionBase {
   InviteServerTransaction(UA ua, Transport transport, IncomingRequest request) {
-    id = request.via_branch!;
+    id = request.via_branch;
     this.ua = ua;
     this.transport = transport;
     this.request = request;
@@ -27,9 +25,9 @@ class InviteServerTransaction extends TransactionBase {
 
     request.reply(100);
   }
-  Timer? _resendProvisionalTimer;
-  bool? transportError;
-  Timer? L, H, I;
+  Timer _resendProvisionalTimer;
+  bool transportError;
+  Timer L, H, I;
 
   void stateChanged(TransactionState state) {
     this.state = state;
@@ -90,9 +88,9 @@ class InviteServerTransaction extends TransactionBase {
 
   // INVITE Server Transaction RFC 3261 17.2.1.
   @override
-  void receiveResponse(int? status_code, IncomingMessage response,
-      [void Function()? onSuccess, void Function()? onFailure]) {
-    if (status_code! >= 100 && status_code <= 199) {
+  void receiveResponse(int status_code, IncomingMessage response,
+      [void Function() onSuccess, void Function() onFailure]) {
+    if (status_code >= 100 && status_code <= 199) {
       switch (state) {
         case TransactionState.PROCEEDING:
           if (!transport.send(response)) {

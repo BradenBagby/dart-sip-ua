@@ -1,5 +1,3 @@
-
-
 import 'package:sip_ua/sip_ua.dart';
 
 import 'constants.dart';
@@ -15,39 +13,39 @@ import 'utils.dart' as Utils;
 // Default settings.
 class Settings {
   // SIP authentication.
-  String? authorization_user;
-  String? password;
-  String? realm;
-  String? ha1;
+  String authorization_user;
+  String password;
+  String realm;
+  String ha1;
 
   // SIP account.
-  String? display_name;
+  String display_name;
   dynamic uri;
   dynamic contact_uri;
   String user_agent = DartSIP_C.USER_AGENT;
 
   // SIP instance id (GRUU).
-  String? instance_id = null;
+  String instance_id = null;
 
   // Preloaded SIP Route header field.
-  bool? use_preloaded_route = false;
+  bool use_preloaded_route = false;
 
   // Session parameters.
-  bool? session_timers = true;
+  bool session_timers = true;
   SipMethod session_timers_refresh_method = SipMethod.UPDATE;
-  int? no_answer_timeout = 60;
+  int no_answer_timeout = 60;
 
   // Registration parameters.
-  bool? register = true;
-  int? register_expires = 600;
+  bool register = true;
+  int register_expires = 600;
   dynamic registrar_server;
-  Map<String, dynamic>? register_extra_contact_uri_params;
+  Map<String, dynamic> register_extra_contact_uri_params;
 
   // Dtmf mode
-  DtmfMode? dtmf_mode = DtmfMode.INFO;
+  DtmfMode dtmf_mode = DtmfMode.INFO;
 
   // Connection options.
-  List<WebSocketInterface>? sockets = <WebSocketInterface>[];
+  List<WebSocketInterface> sockets = <WebSocketInterface>[];
   int connection_recovery_max_interval = 30;
   int connection_recovery_min_interval = 2;
 
@@ -55,12 +53,12 @@ class Settings {
    * Host address.
    * Value to be set in Via sent_by and host part of Contact FQDN.
   */
-  String? via_host = '${Utils.createRandomToken(12)}.invalid';
+  String via_host = '${Utils.createRandomToken(12)}.invalid';
 
   // DartSIP ID
-  String? jssip_id;
+  String jssip_id;
 
-  String? hostport_params;
+  String hostport_params;
 }
 
 // Configuration checks.
@@ -68,7 +66,7 @@ class Checks {
   Map<String, Null Function(Settings src, Settings dst)> mandatory =
       <String, Null Function(Settings src, Settings dst)>{
     'sockets': (Settings src, Settings dst) {
-      List<WebSocketInterface>? sockets = src.sockets;
+      List<WebSocketInterface> sockets = src.sockets;
       /* Allow defining sockets parameter as:
        *  Socket: socket
        *  List of Socket: [socket1, socket2]
@@ -76,8 +74,8 @@ class Checks {
        *  List of Objects and Socket: [{socket: socket1}, socket2]
        */
       List<WebSocketInterface> copy = <WebSocketInterface>[];
-      if (sockets is List && (sockets?.length ?? 0) > 0) {
-        for (WebSocketInterface socket in sockets!) {
+      if (sockets is List && sockets.length > 0) {
+        for (WebSocketInterface socket in sockets) {
           if (Socket.isSocket(socket)) {
             copy.add(socket);
           }
@@ -109,7 +107,7 @@ class Checks {
   Map<String, Null Function(Settings src, Settings dst)> optional =
       <String, Null Function(Settings src, Settings dst)>{
     'authorization_user': (Settings src, Settings dst) {
-      String? authorization_user = src.authorization_user;
+      String authorization_user = src.authorization_user;
       if (authorization_user == null) return;
       if (Grammar.parse('"$authorization_user"', 'quoted_string') == -1) {
         return;
@@ -118,14 +116,14 @@ class Checks {
       }
     },
     'user_agent': (Settings src, Settings dst) {
-      String? user_agent = src.user_agent;
+      String user_agent = src.user_agent;
       if (user_agent == null) return;
       if (user_agent is String) {
         dst.user_agent = user_agent;
       }
     },
     'connection_recovery_max_interval': (Settings src, Settings dst) {
-      int? connection_recovery_max_interval =
+      int connection_recovery_max_interval =
           src.connection_recovery_max_interval;
       if (connection_recovery_max_interval == null) return;
       if (connection_recovery_max_interval > 0) {
@@ -133,7 +131,7 @@ class Checks {
       }
     },
     'connection_recovery_min_interval': (Settings src, Settings dst) {
-      int? connection_recovery_min_interval =
+      int connection_recovery_min_interval =
           src.connection_recovery_min_interval;
       if (connection_recovery_min_interval == null) return;
       if (connection_recovery_min_interval > 0) {
@@ -151,12 +149,12 @@ class Checks {
       }
     },
     'display_name': (Settings src, Settings dst) {
-      String? display_name = src.display_name;
+      String display_name = src.display_name;
       if (display_name == null) return;
       dst.display_name = display_name;
     },
     'instance_id': (Settings src, Settings dst) {
-      String? instance_id = src.instance_id;
+      String instance_id = src.instance_id;
       if (instance_id == null) return;
       if (instance_id.contains(RegExp(r'^uuid:', caseSensitive: false))) {
         instance_id = instance_id.substring(5);
@@ -168,14 +166,14 @@ class Checks {
       }
     },
     'no_answer_timeout': (Settings src, Settings dst) {
-      int? no_answer_timeout = src.no_answer_timeout;
+      int no_answer_timeout = src.no_answer_timeout;
       if (no_answer_timeout == null) return;
       if (no_answer_timeout > 0) {
         dst.no_answer_timeout = no_answer_timeout;
       }
     },
     'session_timers': (Settings src, Settings dst) {
-      bool? session_timers = src.session_timers;
+      bool session_timers = src.session_timers;
       if (session_timers == null) return;
       if (session_timers is bool) {
         dst.session_timers = session_timers;
@@ -188,29 +186,29 @@ class Checks {
       }
     },
     'password': (Settings src, Settings dst) {
-      String? password = src.password;
+      String password = src.password;
       if (password == null) return;
       dst.password = password.toString();
     },
     'realm': (Settings src, Settings dst) {
-      String? realm = src.realm;
+      String realm = src.realm;
       if (realm == null) return;
       dst.realm = realm.toString();
     },
     'ha1': (Settings src, Settings dst) {
-      String? ha1 = src.ha1;
+      String ha1 = src.ha1;
       if (ha1 == null) return;
       dst.ha1 = ha1.toString();
     },
     'register': (Settings src, Settings dst) {
-      bool? register = src.register;
+      bool register = src.register;
       if (register == null) return;
       if (register is bool) {
         dst.register = register;
       }
     },
     'register_expires': (Settings src, Settings dst) {
-      int? register_expires = src.register_expires;
+      int register_expires = src.register_expires;
       if (register_expires == null) return;
       if (register_expires > 0) {
         dst.register_expires = register_expires;
@@ -230,7 +228,7 @@ class Checks {
       }
     },
     'register_extra_contact_uri_params': (Settings src, Settings dst) {
-      Map<String, dynamic>? register_extra_contact_uri_params =
+      Map<String, dynamic> register_extra_contact_uri_params =
           src.register_extra_contact_uri_params;
       if (register_extra_contact_uri_params == null) return;
       if (register_extra_contact_uri_params is Map<String, dynamic>) {
@@ -239,14 +237,14 @@ class Checks {
       }
     },
     'use_preloaded_route': (Settings src, Settings dst) {
-      bool? use_preloaded_route = src.use_preloaded_route;
+      bool use_preloaded_route = src.use_preloaded_route;
       if (use_preloaded_route == null) return;
       if (use_preloaded_route is bool) {
         dst.use_preloaded_route = use_preloaded_route;
       }
     },
     'dtmf_mode': (Settings src, Settings dst) {
-      DtmfMode? dtmf_mode = src.dtmf_mode;
+      DtmfMode dtmf_mode = src.dtmf_mode;
       if (dtmf_mode == null) return;
       if (dtmf_mode is DtmfMode) {
         dst.dtmf_mode = dtmf_mode;
