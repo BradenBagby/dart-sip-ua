@@ -72,7 +72,7 @@ class Registrator {
     }
   }
 
-  UA _ua;
+  /*late final*/ UA _ua;
   Transport _transport;
   URI _registrar;
   int _expires;

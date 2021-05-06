@@ -198,7 +198,7 @@ URI normalizeTarget(dynamic target, [String domain]) {
   }
 }
 
-String headerize(String str) {
+String/*!*/ headerize(String str) {
   Map<String, String> exceptions = <String, String>{
     'Call-Id': 'Call-ID',
     'Cseq': 'CSeq',
@@ -206,7 +206,7 @@ String headerize(String str) {
   };
 
   List<String> names = str.toLowerCase().replaceAll('_', '-').split('-');
-  String hname = '';
+  String/*!*/ hname = '';
   int parts = names.length;
   int part;
 

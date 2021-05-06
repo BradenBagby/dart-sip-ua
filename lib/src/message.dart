@@ -24,20 +24,18 @@ class Message extends EventManager {
     _local_identity = null;
     _remote_identity = null;
 
-    // Whether an incoming message has been replied.
-    _is_replied = false;
-
     // Custom message empty object for high level use.
     _data = <String, dynamic>{};
   }
 
-  UA _ua;
+  /*late final*/ UA _ua;
   dynamic _request;
   bool _closed;
   String _direction;
   NameAddrHeader _local_identity;
   NameAddrHeader _remote_identity;
-  bool _is_replied;
+  // Whether an incoming message has been replied.
+  bool/*?*/ _is_replied = false;
   Map<String, dynamic> _data;
   String get direction => _direction;
 
@@ -47,7 +45,7 @@ class Message extends EventManager {
 
   Map<String, dynamic> get data => _data;
 
-  void send(String target, String body, [Map<String, dynamic> options]) {
+  void send(String target, String/*?*/ body, [Map<String, dynamic> options]) {
     String originalTarget = target;
     options = options ?? <String, dynamic>{};
 
@@ -73,7 +71,7 @@ class Message extends EventManager {
 
     _request =
         OutgoingRequest(SipMethod.MESSAGE, normalized, _ua, null, extraHeaders);
-    if (body != null) {
+    if (body != null /* !=null*/) { //TODO: BBB check if this is still != null
       _request.body = body;
     }
 
