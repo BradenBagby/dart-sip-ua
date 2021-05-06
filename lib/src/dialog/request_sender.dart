@@ -32,7 +32,7 @@ class DialogRequestSender {
 
   void send() {
     EventManager handlers = EventManager();
-    handlers.on(EventOnRequestTimeout(), (EventOnRequestTimeout value) {
+    handlers.on(EventOnRequestTimeout, (EventOnRequestTimeout value) {
       _eventHandlers.emit(EventOnRequestTimeout());
     });
     handlers.on(EventOnTransportError(), (EventOnTransportError value) {
