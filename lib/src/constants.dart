@@ -1,4 +1,4 @@
-// @dart=2.9
+
 
 const String USER_AGENT = 'dart-sip-ua v0.2.2';
 
@@ -112,12 +112,12 @@ enum SipMethod {
 }
 
 class SipMethodHelper {
-  static String getName(SipMethod/*!*/ method) {
+  static String getName(SipMethod method) {
     int period = method.toString().indexOf('.');
     return method.toString().substring(period + 1);
   }
 
-  static SipMethod fromString(String/*!*/ name) {
+  static SipMethod? fromString(String name) {
     if (name != null) {
       String cleanName = name.toUpperCase();
       for (SipMethod method in SipMethod.values) {

@@ -1,13 +1,13 @@
-// @dart=2.9
+
 
 import 'utils.dart';
 
 class ErrorImpl extends Error {
-  int code;
-  String name;
-  String parameter;
+  int? code;
+  String? name;
+  String? parameter;
   dynamic value;
-  String message;
+  String? message;
   dynamic status;
 }
 

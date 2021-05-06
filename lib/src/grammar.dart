@@ -1,11 +1,11 @@
-// @dart=2.9
+
 
 import 'package:parser_error/parser_error.dart';
 
 import 'grammar_parser.dart';
 
 class Grammar {
-  static dynamic parse(String input, String startRule) {
+  static dynamic parse(String? input, String startRule) {
     GrammarParser parser = GrammarParser('');
     dynamic result = parser.parse(input, startRule);
     if (!parser.success) {

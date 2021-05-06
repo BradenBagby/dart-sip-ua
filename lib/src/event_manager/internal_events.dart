@@ -54,9 +54,9 @@ class EventSetLocalDescriptionFailed extends EventType {
 }
 
 class EventFailedUnderScore extends EventType {
-  EventFailedUnderScore({required this.originator, required this.cause});
-  String originator;
-  ErrorCause cause;
+  EventFailedUnderScore({ this.originator,  this.cause});
+  String? originator;
+  ErrorCause? cause;
 }
 
 class EventGetUserMediaFailed extends EventType {

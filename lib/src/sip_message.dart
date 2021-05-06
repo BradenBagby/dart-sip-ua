@@ -1,4 +1,4 @@
-// @dart=2.9
+
 
 import 'dart:convert' show utf8;
 
@@ -29,8 +29,8 @@ import 'utils.dart' as utils;
  * -param {String} [body]
  */
 class OutgoingRequest {
-  OutgoingRequest(SipMethod method, URI ruri, UA ua,
-      [Map<String, dynamic> params, List<dynamic> extraHeaders, String body]) {
+  OutgoingRequest(SipMethod? method, URI? ruri, UA? ua,
+      [Map<String, dynamic>? params, List<dynamic>? extraHeaders, String? body]) {
     // Mandatory parameters check.
     if (method == null || ruri == null || ua == null) {
       throw Exceptions.TypeError('OutgoingRequest: ctor parameters invalid!');
@@ -49,8 +49,8 @@ class OutgoingRequest {
     // Route.
     if (params['route_set'] != null) {
       setHeader('route', params['route_set']);
-    } else if (ua.configuration.use_preloaded_route) {
-      setHeader('route', '<${ua.transport.sip_uri};lr>');
+    } else if (ua.configuration.use_preloaded_route!) {
+      setHeader('route', '<${ua.transport!.sip_uri};lr>');
     }
 
     // Via.
@@ -65,7 +65,7 @@ class OutgoingRequest {
     dynamic to_params = params['to_tag'] != null
         ? <String, dynamic>{'tag': params['to_tag']}
         : null;
-    String to_display_name = params['to_display_name'];
+    String? to_display_name = params['to_display_name'];
 
     to = NameAddrHeader(to_uri, to_display_name, to_params);
     setHeader('to', to.toString());
@@ -75,7 +75,7 @@ class OutgoingRequest {
     Map<String, dynamic> from_params = <String, dynamic>{
       'tag': params['from_tag'] ?? utils.newTag()
     };
-    String display_name;
+    String? display_name;
 
     if (params['from_display_name'] != null) {
       display_name = params['from_display_name'];
@@ -90,7 +90,7 @@ class OutgoingRequest {
 
     // Call-ID.
     String call_id = params['call_id'] ??
-        (ua.configuration.jssip_id + utils.createRandomToken(15));
+        (ua.configuration.jssip_id! + utils.createRandomToken(15));
 
     this.call_id = call_id;
     setHeader('call-id', call_id);
@@ -99,21 +99,21 @@ class OutgoingRequest {
     num cseq =
         params['cseq'] ?? utils.Math.floor(utils.Math.randomDouble() * 10000);
 
-    this.cseq = cseq;
+    this.cseq = cseq as int?;
     setHeader('cseq', '$cseq ${SipMethodHelper.getName(method)}');
   }
 
-  UA ua;
+  UA? ua;
   Map<String, dynamic> headers = <String, dynamic>{};
-  SipMethod method;
-  URI ruri;
-  String body;
+  SipMethod? method;
+  URI? ruri;
+  String? body;
   List<dynamic> extraHeaders = <dynamic>[];
-  NameAddrHeader to;
-  NameAddrHeader from;
-  String call_id;
-  int cseq;
-  Map<String, dynamic> sdp;
+  NameAddrHeader? to;
+  NameAddrHeader? from;
+  String? call_id;
+  int? cseq;
+  Map<String, dynamic>? sdp;
   dynamic transaction;
 
   /**
@@ -140,7 +140,7 @@ class OutgoingRequest {
    * -returns {String|null} Returns the specified header, null if header doesn't exist.
    */
   dynamic getHeader(String name) {
-    List<dynamic> headers = this.headers[utils.headerize(name)];
+    List<dynamic>? headers = this.headers[utils.headerize(name)];
 
     if (headers != null) {
       if (headers[0] != null) {
@@ -164,7 +164,7 @@ class OutgoingRequest {
    * -returns {Array} Array with all the headers of the specified name.
    */
   List<dynamic> getHeaders(String name) {
-    List<dynamic> headers = this.headers[utils.headerize(name)];
+    List<dynamic>? headers = this.headers[utils.headerize(name)];
     List<dynamic> result = <dynamic>[];
 
     if (headers != null) {
@@ -214,7 +214,7 @@ class OutgoingRequest {
    *
    * Returns sdp.
    */
-  Map<String, dynamic> parseSDP({bool force = false}) {
+  Map<String, dynamic>? parseSDP({bool force = false}) {
     if (!force && sdp != null) {
       return sdp;
     } else {
@@ -225,7 +225,7 @@ class OutgoingRequest {
 
   @override
   String toString() {
-    String msg = '${SipMethodHelper.getName(method)} $ruri SIP/2.0\r\n';
+    String msg = '${SipMethodHelper.getName(method!)} $ruri SIP/2.0\r\n';
 
     headers.forEach((String headerName, dynamic headerValues) {
       headerValues.forEach((dynamic value) {
@@ -246,17 +246,17 @@ class OutgoingRequest {
         supported.add('gruu');
         break;
       case SipMethod.INVITE:
-        if (ua.configuration.session_timers) {
+        if (ua!.configuration.session_timers!) {
           supported.add('timer');
         }
-        if (ua.contact.pub_gruu != null || ua.contact.temp_gruu != null) {
+        if (ua!.contact!.pub_gruu != null || ua!.contact!.temp_gruu != null) {
           supported.add('gruu');
         }
         supported.add('ice');
         supported.add('replaces');
         break;
       case SipMethod.UPDATE:
-        if (ua.configuration.session_timers) {
+        if (ua!.configuration.session_timers!) {
           supported.add('timer');
         }
         supported.add('ice');
@@ -267,7 +267,7 @@ class OutgoingRequest {
 
     supported.add('outbound');
 
-    String userAgent = ua.configuration.user_agent ?? DartSIP_C.USER_AGENT;
+    String userAgent = ua!.configuration.user_agent ?? DartSIP_C.USER_AGENT;
 
     // Allow.
     msg += 'Allow: ${DartSIP_C.ALLOWED_METHODS}\r\n';
@@ -275,12 +275,12 @@ class OutgoingRequest {
     msg += 'User-Agent: $userAgent\r\n';
 
     if (body != null) {
-      logger.debug('Outgoing Message: ' + body);
+      logger.debug('Outgoing Message: ' + body!);
       //Here we should calculate the real content length for UTF8
-      List<int> encoded = utf8.encode(body);
+      List<int> encoded = utf8.encode(body!);
       int length = encoded.length;
       msg += 'Content-Length: $length\r\n\r\n';
-      msg += body;
+      msg += body!;
     } else {
       msg += 'Content-Length: 0\r\n\r\n';
     }
@@ -307,8 +307,8 @@ class OutgoingRequest {
 }
 
 class InitialOutgoingInviteRequest extends OutgoingRequest {
-  InitialOutgoingInviteRequest(URI ruri, UA ua,
-      [Map<String, dynamic> params, List<dynamic> extraHeaders, String body])
+  InitialOutgoingInviteRequest(URI? ruri, UA? ua,
+      [Map<String, dynamic>? params, List<dynamic>? extraHeaders, String? body])
       : super(SipMethod.INVITE, ruri, ua, params, extraHeaders, body) {
     transaction = null;
   }
@@ -355,24 +355,24 @@ class IncomingMessage {
     sdp = null;
   }
 
-  String data;
-  Map<String, dynamic> headers;
-  SipMethod method;
-  String via_branch;
-  String call_id;
-  int cseq;
-  NameAddrHeader from;
-  String from_tag;
-  NameAddrHeader to;
-  String to_tag;
-  String body;
-  Map<String, dynamic> sdp;
+  late String data;
+  Map<String, dynamic>? headers;
+  SipMethod? method;
+  String? via_branch;
+  String? call_id;
+  int? cseq;
+  NameAddrHeader? from;
+  String? from_tag;
+  NameAddrHeader? to;
+  String? to_tag;
+  String? body;
+  Map<String, dynamic>? sdp;
   dynamic status_code;
-  String reason_phrase;
-  int session_expires;
-  String session_expires_refresher;
-  ParsedData event;
-  ParsedData replaces;
+  String? reason_phrase;
+  int? session_expires;
+  String? session_expires_refresher;
+  ParsedData? event;
+  late ParsedData replaces;
   dynamic refer_to;
 
   /**
@@ -384,10 +384,10 @@ class IncomingMessage {
 
     name = utils.headerize(name);
 
-    if (headers[name] != null) {
-      headers[name].add(header);
+    if (headers![name] != null) {
+      headers![name].add(header);
     } else {
-      headers[name] = <dynamic>[header];
+      headers![name] = <dynamic>[header];
     }
   }
 
@@ -395,7 +395,7 @@ class IncomingMessage {
    * Get the value of the given header name at the given position.
    */
   dynamic getHeader(String name) {
-    dynamic header = headers[utils.headerize(name)];
+    dynamic header = headers![utils.headerize(name)];
 
     if (header != null) {
       if (header[0] != null) {
@@ -410,7 +410,7 @@ class IncomingMessage {
    * Get the header/s of the given name.
    */
   List<dynamic> getHeaders(String name) {
-    List<dynamic> headers = this.headers[utils.headerize(name)];
+    List<dynamic>? headers = this.headers![utils.headerize(name)];
     List<dynamic> result = <dynamic>[];
 
     if (headers == null) {
@@ -428,7 +428,7 @@ class IncomingMessage {
    * Verify the existence of the given header.
    */
   bool hasHeader(String name) {
-    return headers.containsKey(utils.headerize(name));
+    return headers!.containsKey(utils.headerize(name));
   }
 
   /**
@@ -441,15 +441,15 @@ class IncomingMessage {
   dynamic parseHeader(String name, {int idx = 0}) {
     name = utils.headerize(name);
 
-    if (headers[name] == null) {
+    if (headers![name] == null) {
       logger.debug('header "$name" not present');
       return null;
-    } else if (idx >= headers[name].length) {
+    } else if (idx >= headers![name].length) {
       logger.debug('not so many "$name" headers present');
       return null;
     }
 
-    dynamic header = headers[name][idx];
+    dynamic header = headers![name][idx];
     dynamic value = header['raw'];
 
     if (header['parsed'] != null) {
@@ -459,7 +459,7 @@ class IncomingMessage {
     // Substitute '-' by '_' for grammar rule matching.
     dynamic parsed = Grammar.parse(value, name.replaceAll('-', '_'));
     if (parsed == -1) {
-      headers[name].splice(idx, 1); // delete from headers
+      headers![name].splice(idx, 1); // delete from headers
       logger.debug('error parsing "$name" header field with value "$value"');
       return null;
     } else {
@@ -491,7 +491,7 @@ class IncomingMessage {
   void setHeader(String name, dynamic value) {
     Map<String, dynamic> header = <String, dynamic>{'raw': value};
 
-    headers[utils.headerize(name)] = <dynamic>[header];
+    headers![utils.headerize(name)] = <dynamic>[header];
   }
 
   /**
@@ -501,7 +501,7 @@ class IncomingMessage {
    *
    * Returns sdp.
    */
-  Map<String, dynamic> parseSDP({bool force = false}) {
+  Map<String, dynamic>? parseSDP({bool force = false}) {
     if (!force && sdp != null) {
       return sdp;
     } else {
@@ -524,10 +524,10 @@ class IncomingRequest extends IncomingMessage {
     transport = null;
     server_transaction = null;
   }
-  UA ua;
-  URI ruri;
-  Transport transport;
-  TransactionBase server_transaction;
+  late UA ua;
+  URI? ruri;
+  Transport? transport;
+  TransactionBase? server_transaction;
   /**
   * Stateful reply.
   * -param {Number} code status code
@@ -537,17 +537,16 @@ class IncomingRequest extends IncomingMessage {
   * -param {Function} [onSuccess] onSuccess callback
   * -param {Function} [onFailure] onFailure callback
   */
-  void reply(int code,
-      [String reason,
-      List<dynamic> extraHeaders,
-      String body,
-      Function onSuccess,
-      Function onFailure]) {
+  void reply(int? code,
+      [String? reason,
+      List<dynamic>? extraHeaders,
+      String? body,
+      Function? onSuccess,
+      Function? onFailure]) {
     List<dynamic> supported = <dynamic>[];
     dynamic to = getHeader('To');
 
-    code = code ?? null;
-    reason = reason ?? null;
+
 
     // Validate code and reason values.
     if (code == null || (code < 100 || code > 699)) {
@@ -584,7 +583,7 @@ class IncomingRequest extends IncomingMessage {
     response += 'To: $to\r\n';
     response += 'From: ${getHeader('From')}\r\n';
     response += 'Call-ID: $call_id\r\n';
-    response += 'CSeq: $cseq ${SipMethodHelper.getName(method)}\r\n';
+    response += 'CSeq: $cseq ${SipMethodHelper.getName(method!)}\r\n';
 
     for (dynamic header in extraHeaders) {
       response += '${header.trim()}\r\n';
@@ -593,17 +592,17 @@ class IncomingRequest extends IncomingMessage {
     // Supported.
     switch (method) {
       case SipMethod.INVITE:
-        if (ua.configuration.session_timers) {
+        if (ua.configuration.session_timers!) {
           supported.add('timer');
         }
-        if (ua.contact.pub_gruu != null || ua.contact.temp_gruu != null) {
+        if (ua.contact!.pub_gruu != null || ua.contact!.temp_gruu != null) {
           supported.add('gruu');
         }
         supported.add('ice');
         supported.add('replaces');
         break;
       case SipMethod.UPDATE:
-        if (ua.configuration.session_timers) {
+        if (ua.configuration.session_timers!) {
           supported.add('timer');
         }
         if (body != null) {
@@ -642,7 +641,7 @@ class IncomingRequest extends IncomingMessage {
     IncomingMessage message = IncomingMessage();
     message.data = response;
 
-    server_transaction.receiveResponse(code, message, onSuccess, onFailure);
+    server_transaction!.receiveResponse(code, message, onSuccess as void Function()?, onFailure as void Function()?);
   }
 
   /**
@@ -650,7 +649,7 @@ class IncomingRequest extends IncomingMessage {
   * -param {Number} code status code
   * -param {String} reason reason phrase
   */
-  void reply_sl(int code, [String reason]) {
+  void reply_sl(int code, [String? reason]) {
     List<dynamic> vias = getHeaders('via');
 
     // Validate code and reason values.
@@ -679,10 +678,10 @@ class IncomingRequest extends IncomingMessage {
     response += 'To: $to\r\n';
     response += 'From: ${getHeader('From')}\r\n';
     response += 'Call-ID: $call_id\r\n';
-    response += 'CSeq: $cseq ${SipMethodHelper.getName(method)}\r\n';
+    response += 'CSeq: $cseq ${SipMethodHelper.getName(method!)}\r\n';
     response += 'Content-Length: ${0}\r\n\r\n';
 
-    transport.send(response);
+    transport!.send(response);
   }
 }
 

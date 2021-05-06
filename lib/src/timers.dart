@@ -1,4 +1,4 @@
-// @dart=2.9
+
 
 import 'dart:async';
 
@@ -20,10 +20,10 @@ class Timers {
 }
 
 Timer setTimeout(Function fn, int duration) {
-  return Timer(Duration(milliseconds: duration), fn);
+  return Timer(Duration(milliseconds: duration), fn as void Function());
 }
 
-void clearTimeout(Timer timer) {
+void clearTimeout(Timer? timer) {
   if (timer != null) {
     timer.cancel();
   }
