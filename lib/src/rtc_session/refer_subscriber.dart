@@ -109,7 +109,7 @@ class ReferSubscriber extends EventManager {
     }
   }
 
-  void _requestSucceeded(IncomingMessage response) {
+  void _requestSucceeded(IncomingMessage? response) {
     logger.debug('REFER succeeded');
 
     logger.debug('emit "requestSucceeded"');
