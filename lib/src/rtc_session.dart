@@ -143,7 +143,7 @@ class RTCSession extends EventManager {
   }
 
   String _id;
-  UA _ua;
+  UA/*!*/ _ua;
   dynamic _request;
   bool _late_sdp;
   Map<String, dynamic> _rtcOfferConstraints;

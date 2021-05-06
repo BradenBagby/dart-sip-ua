@@ -87,7 +87,7 @@ class Contact {
  * @throws {TypeError} If no configuration is given.
  */
 class UA extends EventManager {
-  UA(Settings configuration) {
+  UA(Settings/*!*/ configuration) {
     logger.debug('new() [configuration:${configuration.toString()}]');
 
     _cache = <String, dynamic>{'credentials': <dynamic>{}};
@@ -130,7 +130,7 @@ class UA extends EventManager {
   }
 
   Map<String, dynamic> _cache;
-  Settings _configuration;
+  /*late*/ Settings _configuration;
   DynamicSettings _dynConfiguration;
   Map<String, Dialog> _dialogs;
   Set<Message> _applicants;
