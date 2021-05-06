@@ -1,11 +1,11 @@
-// @dart=2.9
+
 
 import '../message.dart';
 import 'events.dart';
 
 class EventNewMessage extends EventType {
-  EventNewMessage({this.message, this.originator, this.request});
+  EventNewMessage({required this.message, required this.originator, this.request});
   dynamic request;
-  String/*!*/ originator;
-  Message/*!*/ message;
+  String originator;
+  Message message;
 }
