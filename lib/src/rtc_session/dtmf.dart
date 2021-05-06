@@ -21,12 +21,12 @@ class C {
 }
 
 class DTMF extends EventManager {
-  DTMF(this._session, {DtmfMode mode = DtmfMode.INFO}) {
+  DTMF(this._session, {DtmfMode/*!*/ mode = DtmfMode.INFO}) {
     _mode = mode;
   }
 
   final rtc.RTCSession _session;
-  DtmfMode _mode;
+  DtmfMode/*!*/ _mode;
   String _direction;
   String _tone;
   int _duration;
