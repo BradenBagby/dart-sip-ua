@@ -1,5 +1,3 @@
-
-
 import 'dart:convert';
 import 'dart:core';
 import 'dart:math' as DartMath;
@@ -64,15 +62,15 @@ bool isString(dynamic str) {
   }
 }
 
-bool? isNaN(dynamic input) {
+bool isNaN(dynamic input) {
   return input.isNaN;
 }
 
-int? parseInt(String input, int radix) {
+int parseInt(String input, int radix) {
   return int.tryParse(input, radix: radix) ?? null;
 }
 
-double? parseFloat(String input) {
+double parseFloat(String input) {
   return double.tryParse(input) ?? null;
 }
 
@@ -95,7 +93,7 @@ String unescape(String str) {
 
 bool isDecimal(dynamic input) =>
     input != null &&
-    ((input is num && !isNaN(input)!) ||
+    ((input is num && !isNaN(input)) ||
         (input is! num &&
             (parseFloat(input) != null || parseInt(input, 10) != null)));
 
@@ -104,7 +102,7 @@ bool isEmpty(dynamic value) {
       value == '' ||
       value == null ||
       (value is List && value.isEmpty) ||
-      (value is num && isNaN(value)!);
+      (value is num && isNaN(value));
 }
 
 // Used by 'newTag'.
@@ -146,7 +144,7 @@ String escapeUser(String user) => encodeURIComponent(decodeURIComponent(user))
 * Detects the domain part (if given) and properly hex-escapes the user portion.
 * If the user portion has only 'tel' number symbols the user portion is clean of 'tel' visual separators.
 */
-URI? normalizeTarget(dynamic target, [String? domain]) {
+URI normalizeTarget(dynamic target, [String domain]) {
   // If no target is given then raise an error.
   if (target == null) {
     return null;
@@ -158,7 +156,7 @@ URI? normalizeTarget(dynamic target, [String? domain]) {
     // - Last fragment is the desired domain.
     // - Otherwise append the given domain argument.
   } else if (target is String) {
-    List<String> targetArray = target.split('@');
+    List<String> targetArray = (target as String).split('@');
     String targetUser;
     String targetDomain;
 
@@ -219,7 +217,7 @@ String headerize(String str) {
             names[part].substring(1);
   }
   if (exceptions[hname] != null) {
-    hname = exceptions[hname]!;
+    hname = exceptions[hname];
   }
 
   return hname;
@@ -239,6 +237,6 @@ String calculateMD5(String string) {
   return md5.convert(utf8.encode(string)).toString();
 }
 
-List<dynamic> cloneArray(List<dynamic>? array) {
+List<dynamic> cloneArray(List<dynamic> array) {
   return (array != null && array is List) ? array.sublist(0) : <dynamic>[];
 }

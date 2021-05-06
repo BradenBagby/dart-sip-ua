@@ -1,5 +1,3 @@
-
-
 import 'package:sip_ua/src/sip_message.dart';
 
 import '../constants.dart';
@@ -41,9 +39,9 @@ class TransactionBag {
     return results;
   }
 
-  T? getTransaction<T>(Type type, String id) {
+  T getTransaction<T>(Type type, String id) {
     String key = _buildKey(type, id);
-    return transactions[key] as T?;
+    return transactions[key] as T;
   }
 
   List<TransactionBase> removeAll() {
@@ -75,8 +73,8 @@ class TransactionBag {
 bool checkTransaction(TransactionBag _transactions, IncomingRequest request) {
   switch (request.method) {
     case SipMethod.INVITE:
-      InviteServerTransaction? tr = _transactions.getTransaction(
-          InviteServerTransaction, request.via_branch!);
+      InviteServerTransaction tr = _transactions.getTransaction(
+          InviteServerTransaction, request.via_branch);
       if (tr != null) {
         switch (tr.state) {
           case TransactionState.PROCEEDING:
@@ -95,8 +93,8 @@ bool checkTransaction(TransactionBag _transactions, IncomingRequest request) {
       }
       break;
     case SipMethod.ACK:
-      InviteServerTransaction? tr = _transactions.getTransaction(
-          InviteServerTransaction, request.via_branch!);
+      InviteServerTransaction tr = _transactions.getTransaction(
+          InviteServerTransaction, request.via_branch);
 
       // RFC 6026 7.1.
       if (tr != null) {
@@ -117,8 +115,8 @@ bool checkTransaction(TransactionBag _transactions, IncomingRequest request) {
       }
       break;
     case SipMethod.CANCEL:
-      InviteServerTransaction? tr = _transactions.getTransaction(
-          InviteServerTransaction, request.via_branch!);
+      InviteServerTransaction tr = _transactions.getTransaction(
+          InviteServerTransaction, request.via_branch);
       if (tr != null) {
         request.reply_sl(200);
         if (tr.state == TransactionState.PROCEEDING) {
@@ -133,8 +131,8 @@ bool checkTransaction(TransactionBag _transactions, IncomingRequest request) {
       break;
     default:
       // Non-INVITE Server Transaction RFC 3261 17.2.2.
-      NonInviteServerTransaction? tr = _transactions.getTransaction(
-          NonInviteServerTransaction, request.via_branch!);
+      NonInviteServerTransaction tr = _transactions.getTransaction(
+          NonInviteServerTransaction, request.via_branch);
       if (tr != null) {
         switch (tr.state) {
           case TransactionState.TRYING:

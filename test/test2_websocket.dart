@@ -1,5 +1,3 @@
-
-
 import 'dart:async';
 import 'dart:io';
 
@@ -12,8 +10,8 @@ void main() async {
 
 class TestWebsocket2 {
   bool connected = false;
-  late WebSocket ws;
-  late Completer<String> completer;
+  WebSocket ws;
+  Completer<String> completer;
   int ctr = 1;
 
   Completer<String> finished = Completer<String>();

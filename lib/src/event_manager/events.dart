@@ -1,8 +1,5 @@
 /// each EventType class can implement this method and the EventManager will call it before
 /// delivering an event, thus ensuring good quality events with a fail early approach.
-
-
-
 abstract class EventType {
   void sanityCheck() {}
 }
@@ -29,7 +26,7 @@ class ErrorCause {
     return 'Code: [$status_code], Cause: $cause, Reason: $reason_phrase';
   }
 
-  int? status_code;
-  String? cause;
-  String? reason_phrase;
+  int status_code;
+  String cause;
+  String reason_phrase;
 }

@@ -1,5 +1,3 @@
-
-
 import '../constants.dart' as DartSIP_C;
 import '../constants.dart';
 import '../event_manager/event_manager.dart';
@@ -14,22 +12,22 @@ class C {
 }
 
 class ReferNotifier {
-  ReferNotifier(rtc.RTCSession session, int id, [int? expires]) {
+  ReferNotifier(rtc.RTCSession session, int id, [int expires]) {
     _session = session;
     _id = id;
     _expires = expires ?? C.expires;
-    
+    _active = true;
 
     // The creation of a Notifier results in an immediate NOTIFY.
     notify(100);
   }
 
-  late rtc.RTCSession _session;
-  late int _id;
-  late final int _expires;
-  bool _active = true;
+  rtc.RTCSession _session;
+  int _id;
+  int _expires;
+  bool _active;
 
-  void notify(int code, [String? reason]) {
+  void notify(int code, [String reason]) {
     logger.debug('notify()');
 
     if (_active == false) {

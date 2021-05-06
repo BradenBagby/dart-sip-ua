@@ -1,27 +1,27 @@
 import 'events.dart';
 
 class EventReferTrying extends EventType {
-  EventReferTrying({ this.status_line, this.request});
-  String? status_line;
-  dynamic? request;
+  EventReferTrying({this.status_line, this.request});
+  String status_line;
+  dynamic request;
 }
 
 class EventReferProgress extends EventType {
-  EventReferProgress({ this.status_line, this.request});
-  String? status_line;
-  dynamic? request;
+  EventReferProgress({this.status_line, this.request});
+  String status_line;
+  dynamic request;
 }
 
 class EventReferAccepted extends EventType {
-  EventReferAccepted({ this.status_line, this.request});
-  String? status_line;
-  dynamic? request;
+  EventReferAccepted({this.status_line, this.request});
+  String status_line;
+  dynamic request;
 }
 
 class EventReferFailed extends EventType {
-  EventReferFailed({this.request,  this.status_line});
+  EventReferFailed({this.request, this.status_line});
   dynamic request;
-  String? status_line;
+  String status_line;
 }
 
 class EventReferRequestSucceeded extends EventType {
@@ -31,6 +31,6 @@ class EventReferRequestSucceeded extends EventType {
 
 class EventReferRequestFailed extends EventType {
   EventReferRequestFailed({this.response, this.cause});
-  dynamic? response;
-  ErrorCause? cause;
+  dynamic response;
+  ErrorCause cause;
 }

@@ -1,5 +1,3 @@
-
-
 import 'dart:async';
 
 import 'package:sip_ua/src/sip_message.dart';
@@ -14,7 +12,7 @@ import 'transaction_base.dart';
 class NonInviteServerTransaction extends TransactionBase {
   NonInviteServerTransaction(
       UA ua, Transport transport, IncomingRequest request) {
-    id = request.via_branch!;
+    id = request.via_branch;
     this.ua = ua;
     this.transport = transport;
     this.request = request;
@@ -25,8 +23,8 @@ class NonInviteServerTransaction extends TransactionBase {
 
     ua.newTransaction(this);
   }
-  bool? transportError;
-  Timer? J;
+  bool transportError;
+  Timer J;
 
   void stateChanged(TransactionState state) {
     this.state = state;
@@ -53,8 +51,8 @@ class NonInviteServerTransaction extends TransactionBase {
   }
 
   @override
-  void receiveResponse(int? status_code, IncomingMessage response,
-      [void Function()? onSuccess, void Function()? onFailure]) {
+  void receiveResponse(int status_code, IncomingMessage response,
+      [void Function() onSuccess, void Function() onFailure]) {
     if (status_code == 100) {
       /* RFC 4320 4.1
        * 'A SIP element MUST NOT
@@ -82,7 +80,7 @@ class NonInviteServerTransaction extends TransactionBase {
         default:
           break;
       }
-    } else if (status_code! >= 200 && status_code <= 699) {
+    } else if (status_code >= 200 && status_code <= 699) {
       switch (state) {
         case TransactionState.TRYING:
         case TransactionState.PROCEEDING:

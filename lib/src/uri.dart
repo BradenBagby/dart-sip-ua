@@ -1,5 +1,3 @@
-
-
 import 'constants.dart' as DartSIP_C;
 import 'grammar.dart';
 import 'utils.dart' as utils;
@@ -15,10 +13,10 @@ import 'utils.dart';
  *
  */
 class URI {
-  URI(String scheme, String? user, String? host,
-      [int? port,
-      Map<dynamic, dynamic>? parameters,
-      Map<dynamic, dynamic>? headers]) {
+  URI(String scheme, String user, String host,
+      [int port,
+      Map<dynamic, dynamic> parameters,
+      Map<dynamic, dynamic> headers]) {
     // Checks.
     if (host == null) {
       throw AssertionError('missing or invalid "host" parameter');
@@ -53,27 +51,27 @@ class URI {
     }
   }
 
-  String? user;
-  late String _scheme;
+  String user;
+  String _scheme;
   Map<dynamic, dynamic> _parameters = <dynamic, dynamic>{};
   Map<dynamic, dynamic> _headers = <dynamic, dynamic>{};
-   String? _host;
-  int? _port;
+  String _host;
+  int _port;
   String get scheme => _scheme;
 
   set scheme(String value) {
     _scheme = value.toLowerCase();
   }
 
-  String? get host => _host;
+  String get host => _host;
 
-  set host(String? value) {
-    _host = value?.toLowerCase();
+  set host(String value) {
+    _host = value.toLowerCase();
   }
 
-  int? get port => _port;
+  int get port => _port;
 
-  set port(int? value) {
+  set port(int value) {
     _port = value == 0
         ? value
         : (value != null)
@@ -165,7 +163,7 @@ class URI {
     String uri = '$_scheme:';
 
     if (user != null) {
-      uri += '${utils.escapeUser(user!)}@';
+      uri += '${utils.escapeUser(user)}@';
     }
     uri += host;
     if (port != null || port == 0) {
@@ -197,7 +195,7 @@ class URI {
     String aor = '$_scheme:';
 
     if (user != null) {
-      aor += '${utils.escapeUser(user!)}@';
+      aor += '${utils.escapeUser(user)}@';
     }
     aor += _host;
     if (show_port && (_port != null || _port == 0)) {

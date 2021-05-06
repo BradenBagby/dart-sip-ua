@@ -1,5 +1,3 @@
-
-
 import 'dart:async';
 
 import 'package:sip_ua/src/config.dart' as config;
@@ -8,7 +6,7 @@ import 'package:sip_ua/src/transports/websocket_interface.dart';
 import 'package:sip_ua/src/ua.dart';
 import 'package:test/test.dart';
 
-late UA ua;
+UA ua;
 void main() {
   test(' WebSocket: EchoTest', () async {
     Completer<dynamic> completer = Completer<dynamic>();
@@ -25,14 +23,12 @@ void main() {
         print('connecting => ' + data.toString());
       });
 
-      ua.on<EventSocketConnected>(EventSocketConnected(),
+      ua.on<EventSocketConnected>(EventSocketConnected,
           (EventSocketConnected data) {
         print('connected => ' + data.toString());
       });
 
-
-
-      ua.on<EventSocketDisconnected>(EventSocketDisconnected(),
+      ua.on<EventSocketDisconnected>(EventSocketDisconnected,
           (EventSocketDisconnected data) {
         print('disconnected => ' + data.toString());
       });

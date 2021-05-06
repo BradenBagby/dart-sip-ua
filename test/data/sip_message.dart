@@ -1,5 +1,3 @@
-
-
 String request = 'REGISTER sip:tryit.jssip.net SIP/2.0\r\n'
     'Via: SIP/2.0/WSS tode1a23mpsb.invalid;branch=z9hG4bK3625642\r\n'
     'Max-Forwards: 69\r\n'

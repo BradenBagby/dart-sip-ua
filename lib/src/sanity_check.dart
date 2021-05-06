@@ -1,5 +1,3 @@
-
-
 import 'constants.dart' as DartSIP_C;
 import 'constants.dart';
 import 'logger.dart';
@@ -28,9 +26,9 @@ const List<bool Function()> responses = <bool Function()>[
 ];
 
 // local variables.
-late IncomingMessage message;
-late UA ua;
-late Transport transport;
+IncomingMessage message;
+UA ua;
+Transport transport;
 
 bool sanityCheck(IncomingMessage m, UA u, Transport t) {
   message = m;
@@ -93,7 +91,7 @@ bool rfc3261_8_2_2_1() {
 
 bool rfc3261_16_3_4() {
   if (message.to_tag == null) {
-    if (message.call_id!.substring(0, 5) == ua.configuration.jssip_id) {
+    if (message.call_id.substring(0, 5) == ua.configuration.jssip_id) {
       reply(482);
 
       return false;
@@ -103,11 +101,11 @@ bool rfc3261_16_3_4() {
 }
 
 bool rfc3261_18_3_request() {
-  int len = Utils.str_utf8_length(message.body!);
+  int len = Utils.str_utf8_length(message.body);
   dynamic contentLength = message.getHeader('content-length');
 
   if (contentLength != null && contentLength is String) {
-    contentLength = int.tryParse(contentLength) as String? ?? 0 as String;
+    contentLength = int.tryParse(contentLength) ?? 0;
   } else {
     contentLength = 0;
   }
@@ -122,9 +120,9 @@ bool rfc3261_18_3_request() {
 }
 
 bool rfc3261_8_2_2_2() {
-  String? fromTag = message.from_tag;
-  String? call_id = message.call_id;
-  int? cseq = message.cseq;
+  String fromTag = message.from_tag;
+  String call_id = message.call_id;
+  int cseq = message.cseq;
 
   // Accept any in-dialog request.
   if (message.to_tag != null) {
@@ -138,7 +136,7 @@ bool rfc3261_8_2_2_2() {
     // and ignore the INVITE.
     // TODO(cloudwebrtc): we should reply the last response.
     if (ua.transactions
-            .getTransaction(InviteServerTransaction, message.via_branch!) !=
+            .getTransaction(InviteServerTransaction, message.via_branch) !=
         null) {
       result = false;
     }
@@ -160,7 +158,7 @@ bool rfc3261_8_2_2_2() {
   // and ignore the request.
   // TODO(cloudwebrtc): we should reply the last response.
   else if (ua.transactions
-          .getTransaction(NonInviteServerTransaction, message.via_branch!) !=
+          .getTransaction(NonInviteServerTransaction, message.via_branch) !=
       null) {
     result = false;
   }
@@ -192,12 +190,12 @@ bool rfc3261_8_1_3_3() {
 }
 
 bool rfc3261_18_3_response() {
-  int len = Utils.str_utf8_length(message.body!);
+  int len = Utils.str_utf8_length(message.body);
   // ignore: always_specify_types
   var contentLength = message.getHeader('content-length');
 
   if (contentLength != null && contentLength is String) {
-    contentLength = int.tryParse(contentLength) as String? ?? 0 as String;
+    contentLength = int.tryParse(contentLength) ?? 0;
   } else {
     contentLength = 0;
   }
@@ -256,7 +254,7 @@ void reply(int status_code) {
   response += 'From: ${message.getHeader('From')}\r\n';
   response += 'Call-ID: ${message.call_id}\r\n';
   response +=
-      'CSeq: ${message.cseq} ${SipMethodHelper.getName(message.method!)}\r\n';
+      'CSeq: ${message.cseq} ${SipMethodHelper.getName(message.method)}\r\n';
   response += '\r\n';
 
   transport.send(response);

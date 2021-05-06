@@ -15,18 +15,21 @@ class DialogRequestSender {
   DialogRequestSender(
       Dialog dialog, OutgoingRequest request, EventManager eventHandlers) {
     _dialog = dialog;
-    _ua = dialog.ua!;
+    _ua = dialog.ua;
     _request = request;
     _eventHandlers = eventHandlers;
+
+    // RFC3261 14.1 Modifying an Existing Session. UAC Behavior.
+    _reattempt = false;
   }
-  late final Dialog _dialog;
-  late final UA _ua;
-  late final OutgoingRequest _request;
-  late final EventManager _eventHandlers;
-  bool _reattempt = false;
-  Timer? _reattemptTimer;
-  RequestSender? _request_sender;
-  RequestSender? get request_sender => _request_sender;
+  Dialog _dialog;
+  UA _ua;
+  OutgoingRequest _request;
+  EventManager _eventHandlers;
+  bool _reattempt;
+  Timer _reattemptTimer;
+  RequestSender _request_sender;
+  RequestSender get request_sender => _request_sender;
   OutgoingRequest get request => _request;
 
   void send() {
@@ -41,29 +44,28 @@ class DialogRequestSender {
       _eventHandlers.emit(EventOnAuthenticated(request: event.request));
     });
     handlers.on(EventOnReceiveResponse(), (EventOnReceiveResponse event) {
-      _receiveResponse(event.response!);
+      _receiveResponse(event.response);
     });
 
     _request_sender = RequestSender(_ua, _request, handlers);
 
-    request_sender!.send();
+    request_sender.send();
 
     // RFC3261 14.2 Modifying an Existing Session -UAC BEHAVIOR-.
     if ((_request.method == SipMethod.INVITE ||
             (_request.method == SipMethod.UPDATE && _request.body != null)) &&
-        request_sender!.clientTransaction.state !=
-            TransactionState.TERMINATED) {
+        request_sender.clientTransaction.state != TransactionState.TERMINATED) {
       _dialog.uac_pending_reply = true;
-      EventManager eventHandlers = request_sender!.clientTransaction;
-      void Function(EventStateChanged data)? stateChanged;
+      EventManager eventHandlers = request_sender.clientTransaction;
+      void Function(EventStateChanged data) stateChanged;
       stateChanged = (EventStateChanged data) {
-        if (request_sender!.clientTransaction.state ==
+        if (request_sender.clientTransaction.state ==
                 TransactionState.ACCEPTED ||
-            request_sender!.clientTransaction.state ==
+            request_sender.clientTransaction.state ==
                 TransactionState.COMPLETED ||
-            request_sender!.clientTransaction.state ==
+            request_sender.clientTransaction.state ==
                 TransactionState.TERMINATED) {
-          eventHandlers.remove(EventStateChanged(), stateChanged!);
+          eventHandlers.remove(EventStateChanged(), stateChanged);
           _dialog.uac_pending_reply = false;
         }
       };
@@ -85,13 +87,12 @@ class DialogRequestSender {
           _eventHandlers.emit(EventOnErrorResponse(response: response));
         }
       } else {
-        _request.cseq =
-            (_dialog.local_seqnum = _dialog.local_seqnum! + 1) as int;
+        _request.cseq = _dialog.local_seqnum += 1;
         _reattemptTimer = setTimeout(() {
           // TODO(cloudwebrtc): look at dialog state instead.
-          if (_dialog.owner!.status != RTCSession.C.STATUS_TERMINATED) {
+          if (_dialog.owner.status != RTCSession.C.STATUS_TERMINATED) {
             _reattempt = true;
-            _request_sender!.send();
+            _request_sender.send();
           }
         }, 1000);
       }
