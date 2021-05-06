@@ -1,4 +1,4 @@
-// @dart=2.9
+
 
 import '../event_manager/event_manager.dart';
 import '../sip_message.dart';
@@ -17,18 +17,18 @@ enum TransactionState {
 }
 
 abstract class TransactionBase extends EventManager {
-  String/*!*/ id;
-  UA/*!*/ ua;
-  Transport/*!*/ transport;
-  TransactionState state;
-  IncomingMessage last_response;
+  late String id;
+  late UA ua;
+  late Transport transport;
+  TransactionState? state;
+  IncomingMessage? last_response;
   dynamic request;
   void onTransportError();
 
   void send();
 
-  void receiveResponse(int/*?*/ status_code, IncomingMessage response,
-      [void Function() onSuccess, void Function() onFailure]) {
+  void receiveResponse(int? status_code, IncomingMessage response,
+      [void Function()? onSuccess, void Function()? onFailure]) {
     // default NO_OP implementation
   }
 }

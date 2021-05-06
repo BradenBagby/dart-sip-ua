@@ -1,4 +1,4 @@
-// @dart=2.9
+
 
 import 'dart:async';
 
@@ -32,9 +32,9 @@ class InviteClientTransaction extends TransactionBase {
 
     this.ua.newTransaction(this);
   }
-  EventManager _eventHandlers;
+  late EventManager _eventHandlers;
 
-  Timer B, D, M;
+  Timer? B, D, M;
 
   void stateChanged(TransactionState state) {
     this.state = state;
@@ -115,7 +115,7 @@ class InviteClientTransaction extends TransactionBase {
     transport.send(ack);
   }
 
-  void cancel(String/*?*/ reason) {
+  void cancel(String? reason) {
     // Send only if a provisional response (>100) has been received.
     if (state != TransactionState.PROCEEDING) {
       return;
@@ -140,18 +140,18 @@ class InviteClientTransaction extends TransactionBase {
   }
 
   @override
-  void receiveResponse(int status_code, IncomingMessage response,
-      [void Function() onSuccess, void Function() onFailure]) {
+  void receiveResponse(int? status_code, IncomingMessage response,
+      [void Function()? onSuccess, void Function()? onFailure]) {
     int status_code = response.status_code;
 
     if (status_code >= 100 && status_code <= 199) {
       switch (state) {
         case TransactionState.CALLING:
           stateChanged(TransactionState.PROCEEDING);
-          _eventHandlers.emit(EventOnReceiveResponse(response: response));
+          _eventHandlers.emit(EventOnReceiveResponse(response: response as IncomingResponse?));
           break;
         case TransactionState.PROCEEDING:
-          _eventHandlers.emit(EventOnReceiveResponse(response: response));
+          _eventHandlers.emit(EventOnReceiveResponse(response: response as IncomingResponse?));
           break;
         default:
           break;
@@ -164,10 +164,10 @@ class InviteClientTransaction extends TransactionBase {
           M = setTimeout(() {
             timer_M();
           }, Timers.TIMER_M);
-          _eventHandlers.emit(EventOnReceiveResponse(response: response));
+          _eventHandlers.emit(EventOnReceiveResponse(response: response as IncomingResponse?));
           break;
         case TransactionState.ACCEPTED:
-          _eventHandlers.emit(EventOnReceiveResponse(response: response));
+          _eventHandlers.emit(EventOnReceiveResponse(response: response as IncomingResponse?));
           break;
         default:
           break;
@@ -178,7 +178,7 @@ class InviteClientTransaction extends TransactionBase {
         case TransactionState.PROCEEDING:
           stateChanged(TransactionState.COMPLETED);
           sendACK(response);
-          _eventHandlers.emit(EventOnReceiveResponse(response: response));
+          _eventHandlers.emit(EventOnReceiveResponse(response: response as IncomingResponse?));
           break;
         case TransactionState.COMPLETED:
           sendACK(response);
