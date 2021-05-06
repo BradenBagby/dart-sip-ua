@@ -32,8 +32,8 @@ class WebSocketInterface implements Socket {
     _webSocketSettings = webSocketSettings ?? WebSocketSettings();
   }
 
-  String _url;
-  String _sip_uri;
+  /*late*/ String _url;
+  /*late*/ String _sip_uri;
   String _via_transport;
   final String _websocket_protocol = 'sip';
   WebSocketImpl _ws;
@@ -44,10 +44,10 @@ class WebSocketInterface implements Socket {
   WebSocketSettings _webSocketSettings;
 
   @override
-  void Function() onconnect;
+  void Function()/*!*/ onconnect;
   @override
   void Function(
-          WebSocketInterface socket, bool error, int closeCode, String reason)
+          WebSocketInterface socket, bool error, int closeCode, String reason)/*!*/
       ondisconnect;
   @override
   void Function(dynamic data) ondata;

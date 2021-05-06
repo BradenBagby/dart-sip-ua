@@ -16,7 +16,7 @@ typedef OnOpenCallback = void Function();
 class WebSocketImpl {
   WebSocketImpl(this._url);
 
-  final String _url;
+  final String/*!*/ _url;
   WebSocket _socket;
   OnOpenCallback onOpen;
   OnMessageCallback onMessage;
