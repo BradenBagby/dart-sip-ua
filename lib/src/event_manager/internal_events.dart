@@ -123,9 +123,9 @@ class EventCreateOfferFailed extends EventType {
 class EventOnFialed extends EventType {}
 
 class EventSucceeded extends EventType {
-  EventSucceeded({required this.response, required this.originator});
-  String originator;
-  IncomingMessage response;
+  EventSucceeded({this.response, this.originator});
+  String? originator;
+  IncomingMessage? response;
 }
 
 class EventOnTransportError extends EventType {
@@ -148,16 +148,16 @@ class EventOnReceiveResponse extends EventType {
 }
 
 class EventOnDialogError extends EventType {
-  EventOnDialogError({required this.response});
-  IncomingMessage response;
+  EventOnDialogError({this.response});
+  IncomingMessage? response;
 }
 
 class EventOnSuccessResponse extends EventType {
-  EventOnSuccessResponse({required this.response});
-  IncomingMessage response;
+  EventOnSuccessResponse({this.response});
+  IncomingMessage? response;
 }
 
 class EventOnErrorResponse extends EventType {
-  EventOnErrorResponse({required this.response});
-  IncomingMessage response;
+  EventOnErrorResponse({this.response});
+  IncomingMessage? response;
 }

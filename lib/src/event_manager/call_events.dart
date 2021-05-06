@@ -1,5 +1,3 @@
-
-
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 
 import '../rtc_session.dart';
@@ -13,19 +11,24 @@ class CallEvent extends EventType {
 }
 
 class EventNewRTCSession extends CallEvent {
-  EventNewRTCSession({required RTCSession session, String? originator, dynamic request})
+  EventNewRTCSession(
+      {required RTCSession session, String? originator, dynamic request})
       : super(session);
   late String originator;
   dynamic request;
 }
 
 class EventCallConnecting extends CallEvent {
-  EventCallConnecting({required RTCSession session, dynamic request}) : super(session);
+  EventCallConnecting({required RTCSession session, dynamic request})
+      : super(session);
 }
 
 class EventCallEnded extends CallEvent {
   EventCallEnded(
-      {required RTCSession session, required this.originator, required this.cause, required this.request})
+      {required RTCSession session,
+      required this.originator,
+      required this.cause,
+      required this.request})
       : super(session);
   String originator;
   ErrorCause cause;
@@ -33,44 +36,52 @@ class EventCallEnded extends CallEvent {
 }
 
 class EventCallProgress extends CallEvent {
-  EventCallProgress({required RTCSession session, required this.originator, this.response})
+  EventCallProgress(
+      {required RTCSession session, required this.originator, this.response})
       : super(session);
   String originator;
   dynamic response;
 }
 
 class EventCallConfirmed extends CallEvent {
-  EventCallConfirmed({required RTCSession session, required this.originator, this.ack})
+  EventCallConfirmed(
+      {required RTCSession session, required this.originator, this.ack})
       : super(session);
   String originator;
   dynamic ack;
 }
 
 class EventCallHold extends CallEvent {
-  EventCallHold({required RTCSession session, required this.originator}) : super(session);
+  EventCallHold({required RTCSession session, required this.originator})
+      : super(session);
   String originator;
 }
 
 class EventCallUnhold extends CallEvent {
-  EventCallUnhold({required RTCSession session, required this.originator}) : super(session);
+  EventCallUnhold({required RTCSession session, required this.originator})
+      : super(session);
   String originator;
 }
 
 class EventCallMuted extends CallEvent {
-  EventCallMuted({required RTCSession session, required this.audio, required this.video}) : super(session);
+  EventCallMuted(
+      {required RTCSession session, required this.audio, required this.video})
+      : super(session);
   bool audio;
   bool video;
 }
 
 class EventCallUnmuted extends CallEvent {
-  EventCallUnmuted({required RTCSession session, required this.audio, required this.video})
+  EventCallUnmuted(
+      {required RTCSession session, required this.audio, required this.video})
       : super(session);
   bool audio;
   bool video;
 }
 
 class EventCallAccepted extends CallEvent {
-  EventCallAccepted({required RTCSession session, required this.originator, this.response})
+  EventCallAccepted(
+      {required RTCSession session, required this.originator, this.response})
       : super(session);
   String originator;
   dynamic response;
@@ -78,31 +89,38 @@ class EventCallAccepted extends CallEvent {
 
 class EventCallFailed extends CallEvent {
   EventCallFailed(
-      {required RTCSession session,
+      {RTCSession? session,
       String? state,
       this.response,
       required this.originator,
       MediaStream? stream,
-      required this.cause,
+      this.cause,
       this.request,
-      required this.status_line})
+      this.status_line})
       : super(session);
   dynamic response;
   String originator;
-  ErrorCause cause;
+  ErrorCause? cause;
   dynamic request;
-  String status_line;
+  String? status_line;
 }
 
 class EventStream extends CallEvent {
-  EventStream({required RTCSession session, required this.originator, required this.stream})
+  EventStream(
+      {required RTCSession session,
+      required this.originator,
+      required this.stream})
       : super(session);
   String originator;
   MediaStream stream;
 }
 
 class EventCallRefer extends CallEvent {
-  EventCallRefer({required RTCSession session, required this.aor, this.accept, this.reject})
+  EventCallRefer(
+      {required RTCSession session,
+      required this.aor,
+      this.accept,
+      this.reject})
       : super(session);
   String aor;
 
