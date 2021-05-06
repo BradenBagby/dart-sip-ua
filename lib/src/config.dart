@@ -33,9 +33,9 @@ class Settings {
   bool use_preloaded_route = false;
 
   // Session parameters.
-  bool session_timers = true;
+  bool/*?*/ session_timers = true;
   SipMethod session_timers_refresh_method = SipMethod.UPDATE;
-  int no_answer_timeout = 60;
+  int/*?*/ no_answer_timeout = 60;
 
   // Registration parameters.
   bool register = true;
@@ -47,7 +47,7 @@ class Settings {
   DtmfMode dtmf_mode = DtmfMode.INFO;
 
   // Connection options.
-  List<WebSocketInterface> sockets = <WebSocketInterface>[];
+  List<WebSocketInterface>/*!*/ sockets = <WebSocketInterface>[];
   int connection_recovery_max_interval = 30;
   int connection_recovery_min_interval = 2;
 
@@ -118,14 +118,14 @@ class Checks {
       }
     },
     'user_agent': (Settings src, Settings/*!*/ dst) {
-      String user_agent = src.user_agent;
+      String/*?*/ user_agent = src.user_agent;
       if (user_agent == null) return;
       if (user_agent is String) {
         dst.user_agent = user_agent;
       }
     },
     'connection_recovery_max_interval': (Settings src, Settings/*!*/ dst) {
-      int connection_recovery_max_interval =
+      int/*?*/ connection_recovery_max_interval =
           src.connection_recovery_max_interval;
       if (connection_recovery_max_interval == null) return;
       if (connection_recovery_max_interval > 0) {
@@ -133,7 +133,7 @@ class Checks {
       }
     },
     'connection_recovery_min_interval': (Settings src, Settings/*!*/ dst) {
-      int connection_recovery_min_interval =
+      int/*?*/ connection_recovery_min_interval =
           src.connection_recovery_min_interval;
       if (connection_recovery_min_interval == null) return;
       if (connection_recovery_min_interval > 0) {
@@ -168,14 +168,14 @@ class Checks {
       }
     },
     'no_answer_timeout': (Settings src, Settings/*!*/ dst) {
-      int no_answer_timeout = src.no_answer_timeout;
+      int/*?*/ no_answer_timeout = src.no_answer_timeout;
       if (no_answer_timeout == null) return;
       if (no_answer_timeout > 0) {
         dst.no_answer_timeout = no_answer_timeout;
       }
     },
     'session_timers': (Settings src, Settings/*!*/ dst) {
-      bool session_timers = src.session_timers;
+      bool/*?*/ session_timers = src.session_timers;
       if (session_timers == null) return;
       if (session_timers is bool) {
         dst.session_timers = session_timers;
